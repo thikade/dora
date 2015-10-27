@@ -1,0 +1,51 @@
+<style>
+    .ng-invalid { background-color: lightpink; }
+    .ng-valid { background-color: lightgreen; }
+    span.error { color: red; font-weight: bold; }
+</style>
+<h3>SETUP</h3>
+<div class="panel panel-default row" ng-hide="data.error">
+
+    <!-- left area -->
+    <!-- important to use additonal single quotes, else AngJS would look for a variable in scope! -->
+    <ng-include src="'views/navbarLeft.html'"></ng-include>
+
+    <!-- right area -->
+    <div class="col-xs-9">
+        <h3>Enter your DO API v2 Bearer token</h3>
+        <!-- <p>Please enter your details, and we'll ship your goods right away!</p> -->
+        <form name="tokenForm" novalidate>
+            <div class="well">
+                <div class="form-group">
+                    <label>Bearer token</label>
+                    <input name="token" class="form-control" ng-model="data.bearerToken" value="{{data.bearerToken}}" required />
+                    <span class="error" ng-show="tokenForm.token.$error.required">
+                        Please enter your DO API v2 Bearer token!
+                    </span>
+                </div>
+                <div class="text-left">
+                    <button ng-disabled="tokenForm.$invalid"
+                        ng-click="storeToken()"
+                        class="btn btn-info">Store Token</button>
+                    
+                    <button ng-disabled="tokenForm.$invalid"
+                        ng-click="deleteToken()"
+                        class="btn btn-info">Delete Token</button>
+                    
+                    <button ng-disabled="tokenForm.$invalid"
+                        ng-click="tokenValidation()"
+                        class="btn btn-primary">Verify Token</button>
+                    
+                    <span class="pull-right text-muted">
+                    {{data.validation.result}}
+                    </span>
+                </div>
+                <div class="text-right">
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>

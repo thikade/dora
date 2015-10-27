@@ -1,0 +1,19 @@
+{
+  "name": "NodejsStarterApp",
+  "version": "0.0.1",
+  "description": "A sample nodejs app server for Bluemix",
+  "scripts": {
+    "start": "node bluemix.js"
+  },
+  "dependencies": {
+    "angular-loading-bar": "^0.8.0",
+    "cfenv": "1.0.x",
+    "connect": "3.x",
+    "express": "4.12.x",
+    "serve-static": "1.x"
+  },
+  "repository": {},
+  "engines": {
+    "node": "0.12.x"
+  }
+}

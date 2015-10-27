@@ -1,0 +1,95 @@
+<style>
+    .ng-invalid { background-color: lightpink; }
+    .ng-valid { background-color: lightgreen; }
+    span.error { color: red; font-weight: bold; }
+</style>
+
+<h3>MAIN</h3>
+<div class="panel panel-default row" ng-hide="data.error">
+
+    <!-- left area -->
+    <!-- important to use additonal single quotes, else AngJS would look for a variable in scope! -->
+    <ng-include src="'views/navbarLeft.html'"></ng-include>
+
+    <!-- right area -->
+    <div class="col-xs-9">
+        
+        <div class="well">
+            <label>Droplets</label>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-default" ng-click="getDODroplets()">Lookup</button>
+                
+                    <button class='btn btn-primary' ng-repeat="i in data.apiResponse.droplets.droplets" 
+                        ng-show="data.apiResponse.droplets">
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <label>Snapshots</label>
+            
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.privateSnapshots.images.length > 0" 
+                        ng-click="getDOPrivateSnapshots()">Lookup</button>
+                
+                    <button class='btn btn-primary' ng-repeat="i in data.apiResponse.privateSnapshots.images" 
+                        ng-show="data.apiResponse.privateSnapshots">
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <label>List Sizes</label>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.sizes.sizes.length > 0" 
+                        ng-click="getDOSizes()">Lookup</button>
+                
+                    <button class='btn btn-primary' ng-repeat="i in data.apiResponse.sizes.sizes" 
+                        ng-show="data.apiResponse.sizes">
+                        {{i.slug}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <label>List Regions</label>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.regions.regions.length > 0" 
+                        ng-click="getDORegions()">Lookup</button>
+                
+                    <button class='btn btn-primary' ng-repeat="i in data.apiResponse.regions.regions" 
+                        ng-show="data.apiResponse.regions">
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="well">
+            <label>List SSH Keys</label>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.sshkeys.ssh_keys.length > 0" 
+                        ng-click="getDOKeys()">Lookup</button>
+                
+                    <button class='btn btn-primary' ng-repeat="i in data.apiResponse.sshkeys.ssh_keys" 
+                        ng-show="data.apiResponse.sshkeys">
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

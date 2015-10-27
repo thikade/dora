@@ -1,0 +1,131 @@
+<style>
+    .ng-invalid { background-color: lightpink; }
+    .ng-valid { background-color: lightgreen; }
+    span.error { color: red; font-weight: bold; }
+</style>
+
+<h3>CREATE</h3>
+<div class="panel panel-default row" ng-hide="data.error">
+
+    <!-- left area -->
+    <!-- important to use additonal single quotes, else AngJS would look for a variable in scope! -->
+    <ng-include src="'views/navbarLeft.html'"></ng-include>
+
+    <!-- right area -->
+    <div class="col-xs-9">
+        
+        <div class="well">
+            <label>Existing Droplets</label>
+
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-default" ng-click="getDODroplets()">Lookup</button>
+                    
+                    <div class="btn-group btn-group-sm">                    
+                        <button type="button" class='btn btn-info dropdown-toggle' data-toggle="dropdown" ng-repeat="i in data.apiResponse.droplets.droplets" 
+                            ng-show="data.apiResponse.droplets">
+                            {{i.name}}
+                        </button>    
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Dropdown link</a></li>
+                            <li><a href="#">Dropdown link</a></li>
+                        </ul>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="well">
+            <label>Snapshots</label>
+            <span>{{data.newDroplet.snapshot.name}}</span>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.privateSnapshots.images.length > 0" 
+                        ng-click="getDOPrivateSnapshots()">Lookup</button>
+                
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images" 
+                        ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
+                        ng-show="data.apiResponse.privateSnapshots"
+                        ng-click="setSnapshotForNewDroplet(i)" >
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <label>List Regions</label>
+            <span>{{data.newDroplet.region.name}}</span>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.regions.regions.length > 0" 
+                        ng-click="getDORegions()">Lookup</button>
+                
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions" 
+                        ng-class="{ 'btn-primary' : i.name === data.newDroplet.region.name }"
+                        ng-show="data.apiResponse.regions"
+                        ng-click="setRegionForNewDroplet(i)" >
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="well">
+            <label>List Sizes</label>
+            <span>{{data.newDroplet.size}}</span>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.sizes.sizes.length > 0" 
+                        ng-click="getDOSizes()">Lookup</button>
+                
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.sizes.sizes" 
+                        ng-class="{ 'btn-primary' : i.slug === data.newDroplet.size }"
+                        ng-show="data.apiResponse.sizes"
+                        ng-click="setSizeForNewDroplet(i.slug)">
+                        {{i.slug}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="well">
+            <label>List SSH Keys</label>
+            <span>{{data.newDroplet.keyNameString}}</span>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.sshkeys.ssh_keys.length > 0" 
+                        ng-click="getDOKeys()">Lookup</button>
+                
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.sshkeys.ssh_keys" 
+                        ng-class="{ 'btn-primary' : newDropletKeyIsSelected(i.name) }"
+                        ng-show="data.apiResponse.sshkeys"
+                        ng-click="setKeysForNewDroplet(i)">
+                        {{i.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <label>Create new Droplet</label>
+            <span>{{data.newDroplet.id}}</span>
+            <div class="formgroup">
+                <label>Name: </label>
+                <input type="text" ng-model="data.newDroplet.dropletName" disabled required >
+            </div>
+            
+            <div class="btn-group btn-group-sm">                    
+                <button class="btn btn-block btn-default" ng-disabled="!newDropletDefinitionComplete()"
+                    ng-click="createNewDroplet()">Create!</button>
+            </div>
+        
+        </div>
+
+    </div>
+
+</div>
