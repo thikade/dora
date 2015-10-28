@@ -56,9 +56,9 @@ angular.module("dora")
     
     var httpConfig = {
             headers:  {
-                //'Authorization': 'Bearer ' + doApiCfg.myTestToken,
+                // needs to be set by calling "updateHTTPConfigAuthorization"
+                //'Authorization': 'Bearer ' + "xxxx",
                 'Accept': 'application/json',
-                "X-Testing" : "testing"
             }
     };
 
@@ -68,6 +68,10 @@ angular.module("dora")
     $scope.data.bearerToken = undefined;
     $scope.data.apiResponse = {};
     $scope.data.newDroplet  = { keys: {}, keyNames: [] };
+    
+    // container for existing droplets
+    // $scope.data.droplets = [];
+
     $scope.data.error = null;
 
     $scope.data.validation = { result : null };
@@ -361,6 +365,14 @@ angular.module("dora")
                 $scope.consoleLog("createDroplet success!");
                 $scope.consoleLog("response : "  + angular.toJson(response, true));
                 $scope.data.newDroplet.id = response.droplet.id;
+                
+                // $scope.data.droplets.push( {
+                //     id:         response.droplet.id,
+                //     status:     response.droplet.status,
+                //     name:       response.droplet.name,
+                //     imageName:  response.droplet.image.name,
+                //     regionName:  response.droplet.region.name
+                // });
             })
             .error(function (errResponse) {
                 $scope.data.apiError = errResponse;
@@ -393,13 +405,13 @@ angular.module("dora")
 
     $scope.retrieveToken();
     if ($scope.data.bearerToken) {
-        $scope.navigation.selectedMenuButton = "info";
+        $scope.navigation.selectedMenuButton = "create";
+        $location.path("/create/droplet");
         $scope.getDODroplets();
         $scope.getDOPrivateSnapshots();
         $scope.getDOSizes();
         $scope.getDORegions();
         $scope.getDOKeys();
-        $location.path("/info");
     }
     else {
         // no token stored -> got to setup

@@ -19,18 +19,20 @@
 
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
-                    <button class="btn btn-default" ng-click="getDODroplets()">Lookup</button>
+                    <button class="btn btn-default" ng-click="getDODroplets()">Refresh</button>
                     
                     <div class="btn-group btn-group-sm">                    
-                        <button type="button" class='btn btn-info dropdown-toggle' data-toggle="dropdown" ng-repeat="i in data.apiResponse.droplets.droplets" 
-                            ng-show="data.apiResponse.droplets">
-                            {{i.name}}
+                        <button type="button" class='btn btn-default' data-toggle="dropdown" ng-repeat="i in data.apiResponse.droplets.droplets" 
+                            ng-show="data.apiResponse.droplets"
+                            ng-class="{ 'btn-danger' : i.status === 'off', 'btn-success' : i.status === 'active' }"
+                            >
+                            {{i.name}}/{{i.status}}
                         </button>    
                         <ul class="dropdown-menu">
-                            <li><a href="#">Dropdown link</a></li>
-                            <li><a href="#">Dropdown link</a></li>
+                            <li><a href="#">Dropdown link1</a></li>
+                            <li><a href="#">Dropdown link2</a></li>
                         </ul>
-                        
+
                     </div>
 
                 </div>
