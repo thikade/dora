@@ -5,7 +5,7 @@
 
 //declare module
 //angular.module("sportsStore", ["customFilters", "cart", "ngRoute"])
-angular.module("dora", [ "customFilters", "ngRoute", 'angular-loading-bar', 'ngAnimate' ])
+angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-loading-bar', 'ngAnimate' ])
 
     .config(function ($routeProvider) {
 
@@ -31,6 +31,16 @@ angular.module("dora", [ "customFilters", "ngRoute", 'angular-loading-bar', 'ngA
 //configure module
 angular.module("dora")
 
+.constant("CONSTANTS",
+    {
+        "DROPLET_ACTION_REBOOT": 0,
+        "DROPLET_ACTION_SHUTDOWN": 1,
+        "DROPLET_ACTION_POWERON": 2,
+        "DROPLET_ACTION_POWEROFF": 3,
+        "DROPLET_ACTION_DESTROY": 4
+    })
+
+
 .constant("doApiCfg",
     {
         "myTestToken"      : "0c921cd3369f5513557486ad1009f25ad1e4bbb58abaa43d12169abbf313cbdc",
@@ -41,10 +51,14 @@ angular.module("dora")
         "doApiCmdRegions"  : "v2/regions",
         "doApiCmdSizes"    : "v2/sizes",
         "doApiCmdSSHKeys"  : "v2/account/keys",
-        "doApiParamSnapshots" : "type=snapshot&private=true"
+        "doApiParamSnapshots" : "type=snapshot&private=true",
+        "doApiParamPowerOn"   : "type=power_on",
+        "doApiParamPowerOff"  : "type=power_off",
+        "doApiParamShutdown"  : "type=shutdown",
+        "doApiParamReboot"    : "type=reboot"
     })
 
-.controller("DoraMainController", function ($scope, $http, $location, doApiCfg ) {
+.controller("DoraMainController", function ($scope, $http, $location, doApiCfg, CONSTANTS ) {
 
 // store token in localstorage: http://html5doctor.com/storing-data-the-simple-html5-way-and-a-few-tricks-you-might-not-have-known/
 
@@ -63,6 +77,7 @@ angular.module("dora")
     };
 
 
+    $scope.CONSTANTS = CONSTANTS;
     $scope.data = {};
     //$scope.data.droplets = [];
     $scope.data.bearerToken = undefined;
@@ -204,6 +219,7 @@ angular.module("dora")
 
    $scope.getDORegions = function() {
        var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdRegions;
+       $scope.consoleLog("getDORegions: httpconfig: " + angular.toJson(httpConfig, true));
         $http.get(url, httpConfig)
             .success(function (data) {
                 $scope.consoleLog("getDORegions ok"); //+angular.toJson(data,true));
@@ -385,6 +401,7 @@ angular.module("dora")
         $scope.consoleLog("");
     };
 
+
     $scope.oSort = function (o, sortkey) {
         var idxArray = o.sort( function(x, y) {
             console.log("x: " + x + " / y: " +y);
@@ -399,6 +416,83 @@ angular.module("dora")
     return newArray;
     };
 
+
+    $scope.dropletAction = function(droplet, mode) {
+        var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets + "/" + droplet.id +  "/actions";
+        var postParams;
+        if (!mode) {
+            $scope.consoleLog("dropletaction: mode undefined!");
+            return;
+        }
+        switch (mode) {
+            case CONSTANTS.DROPLET_ACTION_POWEROFF:
+                postParams = doApiCfg.doApiParamPowerOff;
+                break;
+            
+            case CONSTANTS.DROPLET_ACTION_POWERON:
+                postParams = doApiCfg.doApiParamPowerOn;
+                break;
+            
+            case CONSTANTS.DROPLET_ACTION_SHUTDOWN:
+                postParams = doApiCfg.doApiParamShutdown;
+                break;
+
+            case CONSTANTS.DROPLET_ACTION_REBOOT:
+                postParams = doApiCfg.doApiParamReboot;
+                break;
+
+            case CONSTANTS.DROPLET_ACTION_DESTROY:
+                url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets + "/" + droplet.id;
+                postParams = null;
+                break;
+
+            default:
+                postParams = "unknown_action_" + mode;
+        }
+        if (postParams) {
+            url += "?" + postParams;
+        }
+        $scope.consoleLog("dropletAction: droplet id: " + droplet.id);
+        $scope.consoleLog("dropletAction: droplet name: " + droplet.name);
+        $scope.consoleLog("dropletAction: url: " + url);
+
+        if (mode === CONSTANTS.DROPLET_ACTION_DESTROY) {
+            $http.delete(url, httpConfig)
+                .success(function (data) {
+                    $scope.consoleLog("dropletAction: destroy cmd issued. check back later for status updates.");
+                })
+                .error(function (error) {
+                    $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
+                    $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
+                })
+                .finally(function () {
+                    //$location.path("/complete");
+                });
+        }
+        else {
+            $http.post(url, null, httpConfig)
+                .success(function (data) {
+                    $scope.consoleLog("dropletAction: cmd issued. check back later for status updates.");
+                })
+                .error(function (error) {
+                    $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
+                    $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
+                })
+                .finally(function () {
+                    //$location.path("/complete");
+                });
+        }
+
+
+    };
+
+    $scope.copyToClipBoard = function(text) {
+        if (text) {
+            window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+        }
+    };
+
+    
     // ===========================
     // main init
     // ===========================
