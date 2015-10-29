@@ -4,7 +4,6 @@
     span.error { color: red; font-weight: bold; }
 </style>
 
-<h3>CREATE</h3>
 <div class="panel panel-default row" ng-hide="data.error">
 
     <!-- left area -->
@@ -16,8 +15,8 @@
 
         <div class="well">
             <label>Existing Droplets</label>
-            <button class="btn btn-default" ng-click="getDODroplets()">Refresh</button>
-
+            <button class="btn btn-default btn-sm" ng-click="getDODroplets()">Refresh</button>
+            <span ng-show="data.apiResponse.droplets.droplets.length == 0">No droplets found.</span>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group">                    
                 </div>
@@ -33,7 +32,8 @@
                 <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
                     <li role="menuitem" ng-show="i.status === 'off'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_POWERON)">Start Droplet</a></li>
                     <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SHUTDOWN)">Shutdown Droplet</a></li>
-                    <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_DESTROY)">DESTROY Droplet</a></li>
+                    <li role="menuitem" class="danger" ><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_DESTROY)">DESTROY Droplet</a></li>
+                    <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPDESTROY)">Snapshot and Destroy Droplet</a></li>
                     <li class="divider" ng-hide="i.status === 'new'">></li>
                     <li role="menuitem"><a href="">Status:&nbsp;{{i.status}}</a></li>
                     <li role="menuitem"><a href="">Snapshot:&nbsp;{{i.image.name}}</a></li>

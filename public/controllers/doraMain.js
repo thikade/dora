@@ -37,7 +37,8 @@ angular.module("dora")
         "DROPLET_ACTION_SHUTDOWN": 1,
         "DROPLET_ACTION_POWERON": 2,
         "DROPLET_ACTION_POWEROFF": 3,
-        "DROPLET_ACTION_DESTROY": 4
+        "DROPLET_ACTION_DESTROY": 4,
+        "DROPLET_ACTION_SNAPDESTROY": 5
     })
 
 
@@ -79,6 +80,7 @@ angular.module("dora")
 
     $scope.CONSTANTS = CONSTANTS;
     $scope.data = {};
+    $scope.data.consoleText = "";
     //$scope.data.droplets = [];
     $scope.data.bearerToken = undefined;
     $scope.data.apiResponse = {};
@@ -427,28 +429,41 @@ angular.module("dora")
         switch (mode) {
             case CONSTANTS.DROPLET_ACTION_POWEROFF:
                 postParams = doApiCfg.doApiParamPowerOff;
+                $scope.data.consoleText = droplet.name + " - PowerOff\n" + $scope.data.consoleText;
                 break;
             
             case CONSTANTS.DROPLET_ACTION_POWERON:
                 postParams = doApiCfg.doApiParamPowerOn;
+                $scope.data.consoleText = droplet.name + " - PowerOn\n" + $scope.data.consoleText;
                 break;
             
             case CONSTANTS.DROPLET_ACTION_SHUTDOWN:
                 postParams = doApiCfg.doApiParamShutdown;
+                $scope.data.consoleText = droplet.name + " - Shutdown\n" + $scope.data.consoleText;
                 break;
 
             case CONSTANTS.DROPLET_ACTION_REBOOT:
                 postParams = doApiCfg.doApiParamReboot;
+                $scope.data.consoleText = droplet.name + " - Reboot\n" + $scope.data.consoleText;
                 break;
 
             case CONSTANTS.DROPLET_ACTION_DESTROY:
                 url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets + "/" + droplet.id;
+                $scope.data.consoleText = droplet.name + " - Destroy\n" + $scope.data.consoleText;
                 postParams = null;
                 break;
+
+            case CONSTANTS.DROPLET_ACTION_SNAPDESTROY:
+                url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets + "/" + droplet.id;
+                postParams = null;
+                $scope.consoleLog("dropletAction: snapshot and destroy: not implemented yet!");
+                $scope.data.consoleText = droplet.name + " - Snapshot & Destroy\n" + $scope.data.consoleText;
+                return;
 
             default:
                 postParams = "unknown_action_" + mode;
         }
+
         if (postParams) {
             url += "?" + postParams;
         }
@@ -460,10 +475,12 @@ angular.module("dora")
             $http.delete(url, httpConfig)
                 .success(function (data) {
                     $scope.consoleLog("dropletAction: destroy cmd issued. check back later for status updates.");
+                    $scope.data.consoleText = "destroy initiated successfully!\n" + $scope.data.consoleText;
                 })
                 .error(function (error) {
                     $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
                     $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
+                    $scope.data.consoleText = "destroy cmd error.\n" + $scope.data.consoleText;
                 })
                 .finally(function () {
                     //$location.path("/complete");
@@ -473,10 +490,12 @@ angular.module("dora")
             $http.post(url, null, httpConfig)
                 .success(function (data) {
                     $scope.consoleLog("dropletAction: cmd issued. check back later for status updates.");
+                    $scope.data.consoleText = "action initiated successfully!\n" + $scope.data.consoleText;
                 })
                 .error(function (error) {
                     $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
                     $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
+                    $scope.data.consoleText = "action cmd error\n" + $scope.data.consoleText;
                 })
                 .finally(function () {
                     //$location.path("/complete");
@@ -492,7 +511,7 @@ angular.module("dora")
         }
     };
 
-    
+
     // ===========================
     // main init
     // ===========================
