@@ -38,7 +38,8 @@ angular.module("dora")
         "DROPLET_ACTION_POWERON": 2,
         "DROPLET_ACTION_POWEROFF": 3,
         "DROPLET_ACTION_DESTROY": 4,
-        "DROPLET_ACTION_SNAPDESTROY": 5
+        "DROPLET_ACTION_SNAPSHOT": 5,
+        "DROPLET_ACTION_SNAPDESTROY": 6
     })
 
 
@@ -52,11 +53,12 @@ angular.module("dora")
         "doApiCmdRegions"  : "v2/regions",
         "doApiCmdSizes"    : "v2/sizes",
         "doApiCmdSSHKeys"  : "v2/account/keys",
-        "doApiParamSnapshots" : "type=snapshot&private=true",
+        "doApiParamListSnapshots" : "type=snapshot&private=true",
         "doApiParamPowerOn"   : "type=power_on",
         "doApiParamPowerOff"  : "type=power_off",
         "doApiParamShutdown"  : "type=shutdown",
-        "doApiParamReboot"    : "type=reboot"
+        "doApiParamReboot"    : "type=reboot",
+        "doApiParamSnapshot"  : "type=snapshot"
     })
 
 .controller("DoraMainController", function ($scope, $http, $location, doApiCfg, CONSTANTS ) {
@@ -166,7 +168,7 @@ angular.module("dora")
     };
 
     $scope.getDOPrivateSnapshots = function() {
-       var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdImages + "?" + doApiCfg.doApiParamSnapshots ;
+       var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdImages + "?" + doApiCfg.doApiParamListSnapshots ;
         $http.get(url, httpConfig)
             .success(function (data) {
                 $scope.consoleLog("getDOPrivateSnapshots ok");
@@ -377,24 +379,19 @@ angular.module("dora")
         
         $scope.consoleLog("");
 
+
         var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets;
         $http.post(url, newDroplet, httpConfig)
             .success(function (response) {
                 $scope.consoleLog("createDroplet success!");
                 $scope.consoleLog("response : "  + angular.toJson(response, true));
                 $scope.data.newDroplet.id = response.droplet.id;
-                
-                // $scope.data.droplets.push( {
-                //     id:         response.droplet.id,
-                //     status:     response.droplet.status,
-                //     name:       response.droplet.name,
-                //     imageName:  response.droplet.image.name,
-                //     regionName:  response.droplet.region.name
-                // });
+                $scope.data.consoleText = "New droplet creation started: " + newDroplet.name + " = " + response.droplet.id + "\n"+ $scope.data.consoleText;
             })
             .error(function (errResponse) {
                 $scope.data.apiError = errResponse;
                 $scope.consoleLog("createDroplet error : " + angular.toJson(errResponse, true));
+                $scope.data.consoleText = "new droplet creation error!";
             })
             .finally(function () {
                 //$location.path("/complete");
@@ -445,6 +442,15 @@ angular.module("dora")
             case CONSTANTS.DROPLET_ACTION_REBOOT:
                 postParams = doApiCfg.doApiParamReboot;
                 $scope.data.consoleText = droplet.name + " - Reboot\n" + $scope.data.consoleText;
+                break;
+
+            case CONSTANTS.DROPLET_ACTION_SNAPSHOT:
+                var now = new Date();
+                var dateString = now.toISOString().slice(0, 19);
+                var snapName = droplet.name + "_"  + dateString;
+                postParams = doApiCfg.doApiParamSnapshot + "&name=" + snapName;
+                $scope.data.consoleText = droplet.name + " - new snapshot: " + snapName + "\n" + $scope.data.consoleText;
+                $scope.consoleLog("dropletAction: droplet id: " + droplet.id);
                 break;
 
             case CONSTANTS.DROPLET_ACTION_DESTROY:

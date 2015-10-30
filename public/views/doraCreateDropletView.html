@@ -15,43 +15,41 @@
 
         <div class="well">
             <label>Existing Droplets</label>
-            <button class="btn btn-default btn-sm" ng-click="getDODroplets()">Refresh</button>
+            <a href="" ng-click="getDODroplets()"><span class="glyphicon glyphicon-refresh"></a>
             <span ng-show="data.apiResponse.droplets.droplets.length == 0">No droplets found.</span>
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group">                    
+                <div class="btn-group btn-group-sm" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.droplets.droplets" >
+                    <!-- droplet button  -->
+                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"
+                        ng-class="{ 'btn-danger' : i.status === 'off', 'btn-success' : i.status === 'active', 'btn-warning' : i.status === 'new' }" >
+                        {{i.name}}&nbsp;({{i.status}}) 
+                        <span class="caret"></span>
+                    </button>
+                    <!-- dropdown  menu -->
+                    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                        <li role="menuitem" ng-show="i.status === 'off'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_POWERON)">Start</a></li>
+                        <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SHUTDOWN)">Shutdown</a></li>
+                        <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPSHOT)">Snapshot</a></li>
+                        <li role="menuitem" class="danger" ><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_DESTROY)">Destroy!</a></li>
+                        <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPDESTROY)">Snapshot and Destroy</a></li>
+                        <li class="divider" ng-hide="i.status === 'new'">></li>
+                        <li role="menuitem"><a href="">Status:&nbsp;{{i.status}}</a></li>
+                        <li role="menuitem"><a href="">Snapshot:&nbsp;{{i.image.name}}</a></li>
+                        <li role="menuitem"><a href="">Region:&nbsp;{{i.region.name}}</a></li>
+                        <li role="menuitem"><a href="">Size:&nbsp;{{i.size.slug}}</a></li>
+                        <li role="menuitem"><a href="" ng-click="copyToClipBoard(i.networks.v4[0].ip_address)">IPv4:&nbsp;{{i.networks.v4[0].ip_address}}</a></li>
+                    </ul>
                 </div>
-            </div>
 
-            <!-- Single button -->
-            <div class="btn-group" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.droplets.droplets" >
-                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"
-                    ng-class="{ 'btn-danger' : i.status === 'off', 'btn-success' : i.status === 'active', 'btn-warning' : i.status === 'new' }" >
-                    {{i.name}}&nbsp;({{i.status}}) 
-                    <span class="caret"></span>
-                </button>
-                <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                    <li role="menuitem" ng-show="i.status === 'off'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_POWERON)">Start Droplet</a></li>
-                    <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SHUTDOWN)">Shutdown Droplet</a></li>
-                    <li role="menuitem" class="danger" ><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_DESTROY)">DESTROY Droplet</a></li>
-                    <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPDESTROY)">Snapshot and Destroy Droplet</a></li>
-                    <li class="divider" ng-hide="i.status === 'new'">></li>
-                    <li role="menuitem"><a href="">Status:&nbsp;{{i.status}}</a></li>
-                    <li role="menuitem"><a href="">Snapshot:&nbsp;{{i.image.name}}</a></li>
-                    <li role="menuitem"><a href="">Region:&nbsp;{{i.region.name}}</a></li>
-                    <li role="menuitem"><a href="">Size:&nbsp;{{i.size.slug}}</a></li>
-                    <li role="menuitem"><a href="" ng-click="copyToClipBoard(i.networks.v4[0].ip_address)">IPv4:&nbsp;{{i.networks.v4[0].ip_address}}</a></li>
-                </ul>
             </div>
         </div>
 
         <div class="well">
             <label>Snapshots</label>
+            <a href="" ng-click="getDOPrivateSnapshots()"> <span class="glyphicon glyphicon-refresh"> </a>
             <span>{{data.newDroplet.snapshot.name}}</span>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
-                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.privateSnapshots.images.length > 0" 
-                        ng-click="getDOPrivateSnapshots()">Lookup</button>
-                
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.privateSnapshots"
@@ -64,12 +62,10 @@
 
         <div class="well">
             <label>List Regions</label>
+            <a href="" ng-click="getDORegions()"> <span class="glyphicon glyphicon-refresh"> </a>
             <span>{{data.newDroplet.region.name}}</span>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
-                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.regions.regions.length > 0" 
-                        ng-click="getDORegions()">Lookup</button>
-                
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.region.name }"
                         ng-show="data.apiResponse.regions"
@@ -82,13 +78,10 @@
         
         <div class="well">
             <label>List Sizes</label>
+            <a href="" ng-click="getDOSizes()"> <span class="glyphicon glyphicon-refresh"> </a>
             <span>{{data.newDroplet.size}}</span>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
-
-                    <button class="btn btn-block btn-default" ng-hide="data.apiResponse.sizes.sizes.length > 0" 
-                        ng-click="getDOSizes()">Lookup</button>
-                
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.sizes.sizes" 
                         ng-class="{ 'btn-primary' : i.slug === data.newDroplet.size }"
                         ng-show="data.apiResponse.sizes"
@@ -101,6 +94,7 @@
         
         <div class="well">
             <label>List SSH Keys</label>
+            <a href="" ng-click="getDOKeys()"> <span class="glyphicon glyphicon-refresh"> </a>
             <span>{{data.newDroplet.keyNameString}}</span>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
