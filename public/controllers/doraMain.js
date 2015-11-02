@@ -54,6 +54,7 @@ angular.module("dora")
         "doApiCmdSizes"    : "v2/sizes",
         "doApiCmdSSHKeys"  : "v2/account/keys",
         "doApiParamListSnapshots" : "type=snapshot&private=true",
+        "doApiParamListPubImages" : "type=snapshot&private=false",
         "doApiParamPowerOn"   : "type=power_on",
         "doApiParamPowerOff"  : "type=power_off",
         "doApiParamShutdown"  : "type=shutdown",
@@ -173,17 +174,27 @@ angular.module("dora")
             .success(function (data) {
                 $scope.consoleLog("getDOPrivateSnapshots ok");
                 $scope.data.apiResponse.privateSnapshots = data;
-                // $scope.consoleLog("images returned: " + angular.toJson(data,true));
-                // for (var i=0; i < data.images.length; i++ ) {
-                //     $scope.consoleLog("ss: " + data.images[i].name);
-                // }
             })
             .error(function (error) {
                 $scope.data.apiError = error;
                 $scope.consoleLog("getDOPrivateSnapshots error returned: " + error);
             })
             .finally(function () {
-                //$location.path("/complete");
+            });
+    };
+
+    $scope.getDOPublicImages = function() {
+       var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdImages + "?" + doApiCfg.doApiParamListPubImages ;
+        $http.get(url, httpConfig)
+            .success(function (data) {
+                $scope.consoleLog("getDOPublicImages ok");
+                $scope.data.apiResponse.publicImages = data;
+            })
+            .error(function (error) {
+                $scope.data.apiError = error;
+                $scope.consoleLog("getDOPublicImages error returned: " + error);
+            })
+            .finally(function () {
             });
     };
 
@@ -267,7 +278,7 @@ angular.module("dora")
             pos = name.indexOf(" ");
         }
         if (pos < 0) {
-            return "unspecified";
+            return name;
         }
         return name.slice(0,pos);
     };
@@ -275,7 +286,13 @@ angular.module("dora")
     $scope.setSnapshotForNewDroplet = function(o) {
         $scope.consoleLog("new droplet: snapshot is: " + o.name + "  ( " + o.id + " )");
         $scope.data.newDroplet.snapshot = { name: o.name, id: o.id };
-        $scope.data.newDroplet.dropletName = $scope.dropletNameFromSnapshotName(o.name);
+        $scope.data.newDroplet.snapshot.distribution = o.distribution;
+        if (o.private) {
+            $scope.data.newDroplet.dropletName = $scope.dropletNameFromSnapshotName(o.name);
+        }
+        else {
+            $scope.data.newDroplet.dropletName = o.distribution + "-" + $scope.dropletNameFromSnapshotName(o.name);
+        }
     };
 
    $scope.setRegionForNewDroplet = function(o) {
@@ -378,7 +395,6 @@ angular.module("dora")
         $scope.consoleLog("POST body END   -------");
         
         $scope.consoleLog("");
-
 
         var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets;
         $http.post(url, newDroplet, httpConfig)
@@ -528,6 +544,7 @@ angular.module("dora")
         $location.path("/create/droplet");
         $scope.getDODroplets();
         $scope.getDOPrivateSnapshots();
+        $scope.getDOPublicImages();
         $scope.getDOSizes();
         $scope.getDORegions();
         $scope.getDOKeys();
