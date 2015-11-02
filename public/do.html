@@ -16,9 +16,9 @@
         #loading-bar .bar { /*background: red;*/ height: 5px;}
         /*#loading-bar .peg { box-shadow: red 1px 0 6px 1px;}*/
         /*#loading-bar-spinner .spinner-icon{ border-top-color:red; border-left-color:red; }*/
-</head>
     </style>
-    <!-- div#gridContainer>div.row.grid-row>div.col-xs-2.btn.btn-info{category$$}*4 -->
+</head>
+
 <body ng-controller="DoraMainController">
     <div class="navbar navbar-inverse">
         <a class="navbar-brand" href="#">DORA - Digital Ocean Remote Admin</a>
@@ -26,10 +26,5 @@
 
 
     <ng-view />
-    
-    <!-- this is replaced by UI routing and ng-view directive -->
-        <!-- important to use additonal single quotes, else AngJS would look for a variable in scope! -->
-        <!-- <ng-include src="'views/productList.html'"></ng-include> -->
-
 </body>
 </html>

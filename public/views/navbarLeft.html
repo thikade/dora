@@ -9,22 +9,20 @@
             ng-click="navigation.selectedMenuButton='setup'">
             Setup
         </a>
-        <a href="#/info"  ng-class="{'btn-warning':navigation.selectedMenuButton === 'info'}"
-            class="btn btn-default navbar-btn btn-block" ng-show="data.bearerToken"
-            ng-click="navigation.selectedMenuButton='info'">
-            Get Infos
-        </a>
         <a href="#/create/droplet" ng-class="{'btn-warning':navigation.selectedMenuButton === 'create'}"
             class="btn btn-default navbar-btn btn-block" ng-show="data.bearerToken"
             ng-click="navigation.selectedMenuButton='create'">
-            Create Droplet
+            Manage Droplets
+        </a>
+        <a href="#/info"  ng-class="{'btn-warning':navigation.selectedMenuButton === 'info'}"
+            class="btn btn-default navbar-btn btn-block" ng-show="data.bearerToken"
+            ng-click="navigation.selectedMenuButton='info'">
+            Show Infos
         </a>
         <a href="#/other" ng-class="{'btn-warning':navigation.selectedMenuButton === 'other'}"
             class="btn btn-default navbar-btn btn-block" 
             ng-click="navigation.selectedMenuButton='other'">
             Other
         </a>
-    
         <ng-include src="'views/consoleWindow.html'"></ng-include>
-
     </div>
