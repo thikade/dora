@@ -16,8 +16,10 @@
         <div class="well">
             <label>Existing Droplets</label>
             <a href="" ng-click="getDODroplets()"><span class="glyphicon glyphicon-refresh"></a>
-            <span ng-show="data.apiResponse.droplets.droplets.length == 0">No droplets found.</span>
             <div class="btn-toolbar" role="toolbar">
+                <!-- info msg shown if no droplet found -->
+                <span class="" ng-show="data.apiResponse.droplets.droplets.length == 0">No droplets found.</span>
+                
                 <div class="btn-group btn-group-sm" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.droplets.droplets" >
                     <!-- droplet button  -->
                     <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"
@@ -47,23 +49,38 @@
         <div class="well">
             <label>Snapshots</label>
             <a href="" ng-click="getDOPrivateSnapshots()"> <span class="glyphicon glyphicon-refresh"> </a>
-            <span>{{data.newDroplet.snapshot.name}}</span>
+            <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.privateSnapshots"
-                        ng-click="setSnapshotForNewDroplet(i)" >
+                        ng-click="i.private=true; setSnapshotForNewDroplet(i)" >
                         {{i.name}}
                     </button>
                 </div>
             </div>
+            <br/>
+            <label>Public Images</label>
+            <a href="" ng-click="getDOPublicImages()"> <span class="glyphicon glyphicon-refresh"> </a>
+            <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm">                    
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicImages.images" 
+                        ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
+                        ng-show="data.apiResponse.publicImages"
+                        ng-click="i.private=false; setSnapshotForNewDroplet(i)" >
+                        {{i.distribution}}&nbsp;({{i.name}})
+                    </button>
+                </div>
+            </div>
+        
         </div>
 
         <div class="well">
             <label>List Regions</label>
             <a href="" ng-click="getDORegions()"> <span class="glyphicon glyphicon-refresh"> </a>
-            <span>{{data.newDroplet.region.name}}</span>
+            <!-- <span>{{data.newDroplet.region.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions" 
@@ -79,7 +96,7 @@
         <div class="well">
             <label>List Sizes</label>
             <a href="" ng-click="getDOSizes()"> <span class="glyphicon glyphicon-refresh"> </a>
-            <span>{{data.newDroplet.size}}</span>
+            <!-- <span>{{data.newDroplet.size}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.sizes.sizes" 
@@ -116,11 +133,11 @@
             <span>{{data.newDroplet.id}}</span>
             <div class="formgroup">
                 <label>Name: </label>
-                <input type="text" ng-model="data.newDroplet.dropletName" disabled required >
+                <input type="text" ng-model="data.newDroplet.dropletName" required >
             </div>
             
-            <div class="btn-group btn-group-sm">                    
-                <button class="btn btn-block btn-default" ng-disabled="!newDropletDefinitionComplete()"
+            <div class="btn-group">                    
+                <button class="btn btn-block btn-success" ng-disabled="!newDropletDefinitionComplete()"
                     ng-click="createNewDroplet()">Create!</button>
             </div>
         
