@@ -83,6 +83,7 @@ angular.module("dora")
 
     $scope.CONSTANTS = CONSTANTS;
     $scope.data = {};
+    $scope.data.settings = { showConsole: true };
     $scope.data.consoleText = "";
     //$scope.data.droplets = [];
     $scope.data.bearerToken = undefined;
