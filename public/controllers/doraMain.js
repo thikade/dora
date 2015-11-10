@@ -80,6 +80,9 @@ angular.module("dora")
             }
     };
 
+    // mousetrap shortcuts
+    Mousetrap.bind("?", function() { console.log('show shortcuts! (not implemented yet)'); });
+    Mousetrap.bind("shift+r", function() { console.log('refresh!'); $scope.refreshAllDOInfos(); });
 
     $scope.CONSTANTS = CONSTANTS;
     $scope.data = {};
@@ -534,6 +537,15 @@ angular.module("dora")
         }
     };
 
+    $scope.refreshAllDOInfos = function() {
+        $scope.getDODroplets();
+        $scope.getDOPrivateSnapshots();
+        $scope.getDOPublicImages();
+        $scope.getDOSizes();
+        $scope.getDORegions();
+        $scope.getDOKeys();
+    };
+
 
     // ===========================
     // main init
@@ -543,12 +555,7 @@ angular.module("dora")
     if ($scope.data.bearerToken) {
         $scope.navigation.selectedMenuButton = "create";
         $location.path("/create/droplet");
-        $scope.getDODroplets();
-        $scope.getDOPrivateSnapshots();
-        $scope.getDOPublicImages();
-        $scope.getDOSizes();
-        $scope.getDORegions();
-        $scope.getDOKeys();
+        $scope.refreshAllDOInfos();
     }
     else {
         // no token stored -> got to setup
