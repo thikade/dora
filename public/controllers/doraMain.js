@@ -55,6 +55,7 @@ angular.module("dora")
         "doApiCmdSSHKeys"  : "v2/account/keys",
         "doApiParamListSnapshots" : "type=snapshot&private=true",
         "doApiParamListPubImages" : "type=snapshot&private=false",
+        "doApiParamListAppImages" : "type=application",
         "doApiParamPowerOn"   : "type=power_on",
         "doApiParamPowerOff"  : "type=power_off",
         "doApiParamShutdown"  : "type=shutdown",
@@ -197,6 +198,21 @@ angular.module("dora")
             .error(function (error) {
                 $scope.data.apiError = error;
                 $scope.consoleLog("getDOPublicImages error returned: " + error);
+            })
+            .finally(function () {
+            });
+    };
+
+    $scope.getDOPublicApplications = function() {
+       var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdImages + "?" + doApiCfg.doApiParamListAppImages ;
+        $http.get(url, httpConfig)
+            .success(function (data) {
+                $scope.consoleLog("getDOPublicApplicatons ok");
+                $scope.data.apiResponse.publicApplications = data;
+            })
+            .error(function (error) {
+                $scope.data.apiError = error;
+                $scope.consoleLog("getDOPublicApplicatons error returned: " + error);
             })
             .finally(function () {
             });
@@ -541,6 +557,7 @@ angular.module("dora")
         $scope.getDODroplets();
         $scope.getDOPrivateSnapshots();
         $scope.getDOPublicImages();
+        $scope.getDOPublicApplications();
         $scope.getDOSizes();
         $scope.getDORegions();
         $scope.getDOKeys();
