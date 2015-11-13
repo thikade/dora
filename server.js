@@ -12,7 +12,10 @@ app.listen(5000);
 */
 
 // new 
-var port = 5000;
+var cfenv = require('cfenv');
+var appEnv = cfenv.getAppEnv();
+var port = appEnv.port;
+
 var express = require('express');
 var app = express();
 var path = require('path');
