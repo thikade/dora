@@ -1,16 +1,16 @@
 {
-  "name": "NodejsStarterApp",
+  "name": "dora",
   "version": "0.0.1",
-  "description": "A sample nodejs app server for Bluemix",
+  "description": "DO Remote Admin",
   "scripts": {
     "start": "node bluemix.js"
   },
   "dependencies": {
     "angular-loading-bar": "^0.8.0",
     "cfenv": "1.0.x",
-    "connect": "3.x",
-    "express": "4.12.x",
-    "serve-static": "1.x"
+    "connect": "^3.4.0",
+    "express": "^4.12.4",
+    "serve-static": "^1.10.0"
   },
   "repository": {},
   "engines": {

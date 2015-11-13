@@ -55,6 +55,7 @@ angular.module("dora")
         "doApiCmdSSHKeys"  : "v2/account/keys",
         "doApiParamListSnapshots" : "type=snapshot&private=true",
         "doApiParamListPubImages" : "type=snapshot&private=false",
+        "doApiParamListAppImages" : "type=application",
         "doApiParamPowerOn"   : "type=power_on",
         "doApiParamPowerOff"  : "type=power_off",
         "doApiParamShutdown"  : "type=shutdown",
@@ -80,6 +81,9 @@ angular.module("dora")
             }
     };
 
+    // mousetrap shortcuts
+    Mousetrap.bind("?", function() { console.log('show shortcuts! (not implemented yet)'); });
+    Mousetrap.bind("shift+r", function() { console.log('refresh!'); $scope.refreshAllDOInfos(); });
 
     $scope.CONSTANTS = CONSTANTS;
     $scope.data = {};
@@ -194,6 +198,21 @@ angular.module("dora")
             .error(function (error) {
                 $scope.data.apiError = error;
                 $scope.consoleLog("getDOPublicImages error returned: " + error);
+            })
+            .finally(function () {
+            });
+    };
+
+    $scope.getDOPublicApplications = function() {
+       var url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdImages + "?" + doApiCfg.doApiParamListAppImages ;
+        $http.get(url, httpConfig)
+            .success(function (data) {
+                $scope.consoleLog("getDOPublicApplicatons ok");
+                $scope.data.apiResponse.publicApplications = data;
+            })
+            .error(function (error) {
+                $scope.data.apiError = error;
+                $scope.consoleLog("getDOPublicApplicatons error returned: " + error);
             })
             .finally(function () {
             });
@@ -534,6 +553,16 @@ angular.module("dora")
         }
     };
 
+    $scope.refreshAllDOInfos = function() {
+        $scope.getDODroplets();
+        $scope.getDOPrivateSnapshots();
+        $scope.getDOPublicImages();
+        $scope.getDOPublicApplications();
+        $scope.getDOSizes();
+        $scope.getDORegions();
+        $scope.getDOKeys();
+    };
+
 
     // ===========================
     // main init
@@ -543,12 +572,7 @@ angular.module("dora")
     if ($scope.data.bearerToken) {
         $scope.navigation.selectedMenuButton = "create";
         $location.path("/create/droplet");
-        $scope.getDODroplets();
-        $scope.getDOPrivateSnapshots();
-        $scope.getDOPublicImages();
-        $scope.getDOSizes();
-        $scope.getDORegions();
-        $scope.getDOKeys();
+        $scope.refreshAllDOInfos();
     }
     else {
         // no token stored -> got to setup
