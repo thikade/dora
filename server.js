@@ -1,16 +1,33 @@
+//old
+/*
 var connect = require('connect');
 var serveStatic = require('serve-static');
 
 var app = connect();
-// var serverDir="../nodejs-data/pro-angularjs/sportsstore";
-//var serverDir="D:/Apps/CloudFoundry/projects/binaryshark/public";
 var serverDir="D:/Apps/nodejs-data/dora/public";
-
-
-
-console.log( "listening on port 5000");
-console.log( "serving rom dir: " + serverDir);
-
 
 app.use(serveStatic(serverDir) );
 app.listen(5000);
+
+*/
+
+// new 
+var port = 5000;
+var express = require('express');
+var app = express();
+var path = require('path');
+
+
+// send our index.html file to the user for the home page
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/public/do.html'));
+});
+
+app.use(express.static('public'));
+
+// start the server
+app.listen(port);
+console.log( "listening on port " + port);
+console.log( "serving from dir: " + __dirname);
+
+
