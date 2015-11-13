@@ -9,9 +9,9 @@ angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-lo
 
     .config(function ($routeProvider) {
 
-        $routeProvider.when("/other", {
-            templateUrl: "/views/doraPlaceholder.html"
-        });
+        // $routeProvider.when("/other", {
+        //     templateUrl: "/views/doraPlaceholder.html"
+        // });
 
         $routeProvider.when("/setup", {
             templateUrl: "/views/doraSetupView.html"
@@ -22,7 +22,7 @@ angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-lo
         });
 
         $routeProvider.otherwise({
-            templateUrl: "/views/doraMainView.html"
+            templateUrl: "/views/doraCreateDropletView.html"
         });
 
     });
