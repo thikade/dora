@@ -11,7 +11,7 @@
     <ng-include src="'views/navbarLeft.html'"></ng-include>
 
     <!-- right area -->
-    <div class="col-xs-9">
+    <div class="col-md-9">
 
         <div class="well">
             <label>Existing Droplets</label>
@@ -20,7 +20,7 @@
                 <!-- info msg shown if no droplet found -->
                 <span class="" ng-show="data.apiResponse.droplets.droplets.length == 0">No droplets found.</span>
                 
-                <div class="btn-group btn-group-sm" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.droplets.droplets" >
+                <div class="btn-group btn-group" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.droplets.droplets" >
                     <!-- droplet button  -->
                     <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"
                         ng-class="{ 'btn-danger' : i.status === 'off', 'btn-success' : i.status === 'active', 'btn-warning' : i.status === 'new' }" >
@@ -30,10 +30,16 @@
                     <!-- dropdown  menu -->
                     <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
                         <li role="menuitem" ng-show="i.status === 'off'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_POWERON)">Start</a></li>
+                        <li role="menuitem" ng-class="{ 'disabled' : i.status === 'active' }">
+                            <a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPSHOT)">Snapshot</a>
+                        </li>
                         <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SHUTDOWN)">Shutdown</a></li>
-                        <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPSHOT)">Snapshot</a></li>
                         <li role="menuitem" class="danger" ><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_DESTROY)">Destroy!</a></li>
-                        <li role="menuitem" ng-show="i.status === 'active'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPDESTROY)">Snapshot and Destroy</a></li>
+
+                        <li role="menuitem" ng-class="{ 'disabled' : i.status === 'active' }">
+                            <a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPDESTROY)">Poweroff + Snapshot + Destroy (Not implemented yet)</a>
+                        </li>
+
                         <li class="divider" ng-hide="i.status === 'new'">></li>
                         <li role="menuitem"><a href="">Status:&nbsp;{{i.status}}</a></li>
                         <li role="menuitem"><a href="">Snapshot:&nbsp;{{i.image.name}}</a></li>
@@ -51,7 +57,7 @@
             <a href="" ng-click="getDOPrivateSnapshots()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-sm">                    
+                <div class="btn-group btn-group">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.privateSnapshots"
@@ -65,7 +71,7 @@
             <a href="" ng-click="getDOPublicImages()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-sm">                    
+                <div class="btn-group btn-group">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicImages.images" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.publicImages"
@@ -79,7 +85,7 @@
             <a href="" ng-click="getDOPublicApplications()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-sm">                    
+                <div class="btn-group btn-group">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicApplications.images" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.publicApplications"
@@ -96,7 +102,7 @@
             <a href="" ng-click="getDORegions()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.region.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-sm">                    
+                <div class="btn-group btn-group">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.region.name }"
                         ng-show="data.apiResponse.regions"
@@ -112,7 +118,7 @@
             <a href="" ng-click="getDOSizes()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.size}}</span> -->
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-sm">                    
+                <div class="btn-group btn-group">                    
                     <button class='btn btn-default' ng-repeat="i in data.apiResponse.sizes.sizes" 
                         ng-class="{ 'btn-primary' : i.slug === data.newDroplet.size }"
                         ng-show="data.apiResponse.sizes"
@@ -128,7 +134,7 @@
             <a href="" ng-click="getDOKeys()"> <span class="glyphicon glyphicon-refresh"> </a>
             <span>{{data.newDroplet.keyNameString}}</span>
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-sm">                    
+                <div class="btn-group btn-group">                    
                     <button class="btn btn-block btn-default" ng-hide="data.apiResponse.sshkeys.ssh_keys.length > 0" 
                         ng-click="getDOKeys()">Lookup</button>
                 

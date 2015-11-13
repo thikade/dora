@@ -2,7 +2,7 @@
     .ng-invalid { background-color: lightpink; }
 </style>
     <!-- left area -->
-    <div class="well col-xs-3" >
+    <div class="well col-md-3" >
 
         <a href="#/setup"  ng-class="{'btn-warning':navigation.selectedMenuButton === 'setup'}"
             class="btn btn-default navbar-btn btn-block"
@@ -14,17 +14,19 @@
             ng-click="navigation.selectedMenuButton='create'">
             Manage Droplets
         </a>
+        <a href="#/create/droplet" "
+            class="btn btn-default navbar-btn btn-block" ng-show="data.bearerToken"
+            ng-click="navigation.selectedMenuButton='create'; refreshAllDOInfos()">
+            Refresh Infos
+        </a>
+        <!--      
         <a href="#/info"  ng-class="{'btn-warning':navigation.selectedMenuButton === 'info'}"
             class="btn btn-default navbar-btn btn-block" ng-show="data.bearerToken"
             ng-click="navigation.selectedMenuButton='info'">
             Show Infos
-        </a>
-        <a href="#/other" ng-class="{'btn-warning':navigation.selectedMenuButton === 'other'}"
-            class="btn btn-default navbar-btn btn-block" 
-            ng-click="navigation.selectedMenuButton='other'">
-            Other
-        </a>
-        
+        </a> 
+        -->
+       
         <div class="checkbox">
             <label><input type="checkbox" ng-model="data.settings.showConsole">Show Debug Console</label>
         </div>
