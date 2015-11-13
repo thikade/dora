@@ -1,7 +1,7 @@
 {
-  "name": "NodejsStarterApp",
+  "name": "dora",
   "version": "0.0.1",
-  "description": "A sample nodejs app server for Bluemix",
+  "description": "DO Remote Admin",
   "scripts": {
     "start": "node bluemix.js"
   },
