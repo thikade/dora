@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
-    <!-- <link href="css/bootstrap.css" rel="stylesheet" />
-    <link href="css/bootstrap-theme.css" rel="stylesheet" /> -->
     <link href="ngmodules/loading-bar.min.css" rel="stylesheet" />
     <style>
         #loading-bar .bar { /*background: red;*/ height: 5px;}
@@ -17,19 +15,72 @@
 </head>
 
 <body ng-controller="DoraMainController">
-    <div class="navbar navbar-inverse">
-        <a class="navbar-brand" href="#">DORA - Digital Ocean Remote Admin</a>
-    </div>
 
+    <nav class="navbar navbar-default navbar-inverse navbar-static-top">
+      <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Digital Ocean Remote Admin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                <li ng-class="{'active':navigation.selectedMenuButton === 'setup'}">
+                    <a href="#/setup"  
+
+                        ng-click="navigation.selectedMenuButton='setup'">
+                        Setup
+                    </a>
+                </li>
+
+                <li ng-class="{'active':navigation.selectedMenuButton === 'create'}">
+                    <a href="#/create/droplet"
+                        ng-show="data.bearerToken"
+                        ng-click="navigation.selectedMenuButton='create'">
+                        Manage Droplets
+                    </a>
+                </li>
+                
+                <li>        
+                    <a href="#/create/droplet" 
+                        ng-show="data.bearerToken"
+                        ng-click="navigation.selectedMenuButton='create'; refreshAllDOInfos()">
+                        Refresh Infos
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div class="checkbox">
+                        <label style="color: #FFF; margin-right: 2em;" ><input type="checkbox" ng-model="data.settings.showConsole">Show Console</label>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+
+      </div>
+    </nav>
+    
     <ng-view />
 
-    <script src="js/angular_1.4.7_min.js"></script>
+    <script src="js/angular.min.js"></script>
     <script src="controllers/doraMain.js"></script>
     <script src="ngmodules/ui-bootstrap-tpls-0.14.3.min.js"></script>
-    <script src="filters/customFilters.js"></script> 
-    <script src="ngmodules/angular-route.js"></script>
+    <script src="ngmodules/angular-route.min.js"></script>
     <script src="ngmodules/angular-animate.min.js"></script>
     <script src="ngmodules/loading-bar.min.js"></script>
+    <script src="filters/customFilters.js"></script> 
     <script src="js/mousetrap.min.js"></script>
 </body>
 </html>
