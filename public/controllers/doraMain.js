@@ -568,8 +568,8 @@ angular.module("dora")
     $scope.refreshAllDOInfos = function() {
         $scope.getDODroplets();
         $scope.getDOPrivateSnapshots();
-        $scope.getDOPublicImages();
-        $scope.getDOPublicApplications();
+        // $scope.getDOPublicImages();
+        // $scope.getDOPublicApplications();
         $scope.getDOSizes();
         $scope.getDORegions();
         $scope.getDOKeys();
