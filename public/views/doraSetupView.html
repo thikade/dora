@@ -25,23 +25,33 @@
                 <div class="text-left">
                     <button ng-disabled="tokenForm.$invalid"
                         ng-click="storeToken()"
-                        class="btn btn-info">Store Token</button>
+                        class="btn btn-success">Store Token</button>
                     
                     <button ng-disabled="tokenForm.$invalid"
                         ng-click="deleteToken()"
-                        class="btn btn-info">Delete Token</button>
+                        class="btn btn-danger">Delete Token</button>
                     
                     <button ng-disabled="tokenForm.$invalid"
                         ng-click="tokenValidation()"
-                        class="btn btn-primary">Verify Token</button>
+                        class="btn btn-info">Verify Token</button>
                     
                     <span class="pull-right text-muted">
                     {{data.validation.result}}
                     </span>
                 </div>
-                <div class="text-right">
-                </div>
 
+                <div class="page-header"></div>
+                    <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Note:</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                        Your DO Bearer token will only ever be transmitted during DO API calls, i.e., sent via https from your browser directly to DO API address https://api.digitalocean.com. The webserver serving this application will NEVER EVER see your token!
+                        </p>
+                        <p>The token will be stored in your browser's local storage.</p>
+                    </div>
+                </div>
             </div>
         </form>
 
