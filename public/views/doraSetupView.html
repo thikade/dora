@@ -1,52 +1,27 @@
-<style>
-    .ng-invalid { background-color: lightpink; }
-    .ng-valid { background-color: lightgreen; }
-    span.error { color: red; font-weight: bold; }
-</style>
 
-    <div class="panel panel-default" ng-hide="data.error">
+<div class="well">
+    <div class="">
         <h3>Enter your DO API v2 Bearer token</h3>
-        <!-- <p>Please enter your details, and we'll ship your goods right away!</p> -->
-        <form name="tokenForm" novalidate>
-            <div class="well">
-                <div class="form-group">
-                    <label>Bearer token</label>
-                    <input name="token" class="form-control" ng-model="data.bearerToken" value="{{data.bearerToken}}" required />
-                    <span class="error" ng-show="tokenForm.token.$error.required">
-                        Please enter your DO API v2 Bearer token!
-                    </span>
-                </div>
-                <div class="text-left">
-                    <button ng-disabled="tokenForm.$invalid"
-                        ng-click="storeToken()"
-                        class="btn btn-success">Store Token</button>
-                    
-                    <button ng-disabled="tokenForm.$invalid"
-                        ng-click="deleteToken()"
-                        class="btn btn-danger">Delete Token</button>
-                    
-                    <button ng-disabled="tokenForm.$invalid"
-                        ng-click="tokenValidation()"
-                        class="btn btn-info">Verify Token</button>
-                    
-                    <span class="pull-right text-muted">
-                    {{data.validation.result}}
-                    </span>
-                </div>
-
-                <div class="page-header"></div>
-                    <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Note:</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                        Your DO Bearer token will only ever be transmitted during DO API calls, i.e., sent via https from your browser directly to DO API address https://api.digitalocean.com. The webserver serving this application will NEVER EVER see your token!
-                        </p>
-                        <p>The token will be stored in your browser's local storage.</p>
-                    </div>
-                </div>
-            </div>
-        </form>
-
     </div>
+    <div class="alert alert-warning" role="alert">
+        <p>
+            Your DO Bearer token will be transmitte during DO API calls only, i.e., sent via https from your browser directly to the DO API endpoint https://api.digitalocean.com. The webserver serving this application will NEVER EVER see your token!
+        </p>
+        <p>The token will be stored in your browser's local storage.</p>
+    </div>
+
+    <form name="tokenForm" novalidate>
+        <div class="form-group">
+            <label>Bearer token</label>
+            <input name="token" class="form-control" ng-model="data.bearerToken" value="{{data.bearerToken}}" required />
+            <span class="error" ng-show="tokenForm.token.$error.required">
+                Please enter your DO API v2 Bearer token!
+            </span>
+        </div>
+    </form>
+    <p>
+        <button ng-disabled="tokenForm.$invalid"ng-click="tokenValidation()"class="btn btn-info">Verify Token</button>
+        <button ng-disabled="tokenForm.$invalid"ng-click="deleteToken()"class="btn btn-danger">Delete Token</button>
+        <span class="pull-right text-muted"> {{data.validation.result}} </span>
+    </p>
+</div>
