@@ -22,7 +22,7 @@
                 
                 <div class="btn-group btn-group" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.droplets.droplets" >
                     <!-- droplet button  -->
-                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"
+                    <button type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"
                         ng-class="{ 'btn-danger' : i.status === 'off', 'btn-success' : i.status === 'active', 'btn-warning' : i.status === 'new' }" >
                         {{i.name}}&nbsp;({{i.status}}) 
                         <span class="caret"></span>
@@ -53,12 +53,12 @@
         </div>
 
         <div class="well">
-            <label>Snapshots</label>
+            <label>Your Snapshots</label>
             <a href="" ng-click="getDOPrivateSnapshots()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group">                    
-                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images" 
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images | orderBy: 'name'" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.privateSnapshots"
                         ng-click="i.private=true; setSnapshotForNewDroplet(i)" >
@@ -72,7 +72,7 @@
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group">                    
-                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicImages.images" 
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicImages.images | orderBy: 'distribution'" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.publicImages"
                         ng-click="i.private=false; setSnapshotForNewDroplet(i)" >
@@ -86,11 +86,12 @@
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group">                    
-                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicApplications.images" 
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.publicApplications.images | orderBy: 'name'" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.publicApplications"
                         ng-click="i.private=false; setSnapshotForNewDroplet(i)" >
-                        {{i.distribution}}&nbsp;({{i.name}})
+                       <!--  {{i.distribution}}&nbsp;({{i.name}}) -->
+                        {{i.name}}
                     </button>
                 </div>
             </div>
@@ -103,7 +104,7 @@
             <!-- <span>{{data.newDroplet.region.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group">                    
-                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions" 
+                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions | orderBy: 'name'" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.region.name }"
                         ng-show="data.apiResponse.regions"
                         ng-click="setRegionForNewDroplet(i)" >
