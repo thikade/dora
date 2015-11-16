@@ -16,6 +16,7 @@
         .ng-valid { background-color: lightgreen; }
 */
         span.error { color: red; font-weight: bold; }
+        body { padding-top: 70px; }
     </style>
 
 </head>
@@ -23,8 +24,8 @@
 <body ng-controller="DoraMainController">
 
     <div class="container">
-        <nav class="navbar navbar-default navbar-inverse navbar-static-top">
-          <div class="container-fluid">
+        <nav class="navbar navbar-default navbar-inverse1 navbar-fixed-top">
+          <div class="container">
 
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -39,6 +40,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed = true">
                 <ul class="nav navbar-nav navbar-left">
+                    <li ng-class="{'active':navigation.selectedMenuButton === 'create'}">
+                        <a href="#/create/droplet"
+                            ng-show="data.bearerToken"
+                            ng-click="navigation.selectedMenuButton='create'">
+                            Manage Droplets
+                        </a>
+                    </li>
+
                     <li ng-class="{'active':navigation.selectedMenuButton === 'setup'}">
                         <a href="#/setup"  
 
@@ -47,14 +56,6 @@
                         </a>
                     </li>
 
-                    <li ng-class="{'active':navigation.selectedMenuButton === 'create'}">
-                        <a href="#/create/droplet"
-                            ng-show="data.bearerToken"
-                            ng-click="navigation.selectedMenuButton='create'">
-                            Manage Droplets
-                        </a>
-                    </li>
-                    
                     <li>        
                         <a href="#/create/droplet" 
                             ng-show="data.bearerToken"
@@ -66,7 +67,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <div class="checkbox">
-                            <label style="color: #FFF; margin-right: 2em;" ><input type="checkbox" ng-model="data.settings.showConsole">Show Console</label>
+                            <label style="color: #000; margin-right: 2em;" ><input type="checkbox" ng-model="data.settings.showConsole">Show Console</label>
                         </div>
                     </li>
 
