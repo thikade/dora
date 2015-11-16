@@ -137,9 +137,11 @@ angular.module("dora")
         if (tmpToken) {
             localStorage.removeItem("DOToken");
             $scope.consoleLog("token deleted from localStorage");
+            $scope.data.validation.result = "Token deleted from local storage.";
         }
         else {
             $scope.consoleLog("token not found in localStorage");
+            $scope.data.validation.result = "Error deleting token from local storage.";
         }
             
     };
@@ -159,8 +161,8 @@ angular.module("dora")
         $http.get(url, httpConfig)
             .success(function (data) {
                 $scope.consoleLog("token validation ok");
-                $scope.data.validation.result = "Token verified";
                 $scope.storeToken($scope.data.bearerToken);
+                $scope.data.validation.result = "Token verified and stored locally.";
                 $scope.consoleLog("token stored locally");
             })
             .error(function (error) {
@@ -579,8 +581,10 @@ angular.module("dora")
     // ===========================
 
     $scope.retrieveToken();
+
     if ($scope.data.bearerToken) {
         $scope.navigation.selectedMenuButton = "create";
+        // $location.path("/setup");
         $location.path("/create/droplet");
         $scope.refreshAllDOInfos();
     }
