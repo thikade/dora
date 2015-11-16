@@ -39,7 +39,8 @@ angular.module("dora")
         "DROPLET_ACTION_POWEROFF": 3,
         "DROPLET_ACTION_DESTROY": 4,
         "DROPLET_ACTION_SNAPSHOT": 5,
-        "DROPLET_ACTION_SNAPDESTROY": 6
+        "DROPLET_ACTION_SNAPANDDESTROY": 6,
+        "SNAPSHOT_ACTION_DESTROY": 7
     })
 
 
@@ -495,12 +496,19 @@ angular.module("dora")
                 postParams = null;
                 break;
 
-            case CONSTANTS.DROPLET_ACTION_SNAPDESTROY:
+            case CONSTANTS.DROPLET_ACTION_SNAPANDDESTROY:
                 url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdDroplets + "/" + droplet.id;
                 postParams = null;
                 $scope.consoleLog("dropletAction: snapshot and destroy: not implemented yet!");
                 $scope.data.consoleText = droplet.name + " - Snapshot & Destroy\n" + $scope.data.consoleText;
                 return;
+
+            case CONSTANTS.SNAPSHOT_ACTION_DESTROY:
+                url = doApiCfg.doApiBaseUrl + "/" + doApiCfg.doApiCmdImages + "/" + droplet.id;
+                postParams = null;
+                $scope.consoleLog("dropletAction: delete snapshot: " + droplet.id + " (" + droplet.name + ")");
+                $scope.data.consoleText = "Deleting Snapshot: " + droplet.name + " (" + droplet.id + ")\n" + $scope.data.consoleText;
+                break;
 
             default:
                 postParams = "unknown_action_" + mode;
@@ -513,7 +521,7 @@ angular.module("dora")
         $scope.consoleLog("dropletAction: droplet name: " + droplet.name);
         $scope.consoleLog("dropletAction: url: " + url);
 
-        if (mode === CONSTANTS.DROPLET_ACTION_DESTROY) {
+        if (mode === CONSTANTS.DROPLET_ACTION_DESTROY || mode === CONSTANTS.SNAPSHOT_ACTION_DESTROY) {
             $http.delete(url, httpConfig)
                 .success(function (data) {
                     $scope.consoleLog("dropletAction: destroy cmd issued. check back later for status updates.");
@@ -521,8 +529,10 @@ angular.module("dora")
                 })
                 .error(function (error) {
                     $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
+                    $scope.consoleLog("ERROR: cmd was: DELETE " + url);
                     $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
                     $scope.data.consoleText = "destroy cmd error.\n" + $scope.data.consoleText;
+                    $scope.data.consoleText = "cmd was: DELETE " + url + "\n" + $scope.data.consoleText;
                 })
                 .finally(function () {
                     //$location.path("/complete");

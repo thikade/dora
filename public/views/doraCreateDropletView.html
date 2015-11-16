@@ -28,7 +28,7 @@
                         <span class="caret"></span>
                     </button>
                     <!-- dropdown  menu -->
-                    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                    <ul class="uib-dropdown-menu" >
                         <li role="menuitem" ng-show="i.status === 'off'"><a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_POWERON)">Start</a></li>
                         <li role="menuitem" ng-class="{ 'disabled' : i.status === 'active' }">
                             <a href="" ng-click="dropletAction(i,CONSTANTS.DROPLET_ACTION_SNAPSHOT)">Snapshot</a>
@@ -57,13 +57,21 @@
             <a href="" ng-click="getDOPrivateSnapshots()"> <span class="glyphicon glyphicon-refresh"> </a>
             <!-- <span>{{data.newDroplet.snapshot.distribution}}&nbsp;&nbsp;{{data.newDroplet.snapshot.name}}</span> -->
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group">                    
-                    <button class='btn btn-default' ng-repeat="i in data.apiResponse.privateSnapshots.images | orderBy: 'name'" 
+
+                <div class="btn-group btn-group" uib-dropdown is-open="status.isopen"  ng-repeat="i in data.apiResponse.privateSnapshots.images | orderBy: 'name'">
+                    <button class='btn btn-default' uib-dropdown-toggle ng-disabled="disabled" 
                         ng-class="{ 'btn-primary' : i.name === data.newDroplet.snapshot.name }"
                         ng-show="data.apiResponse.privateSnapshots"
                         ng-click="i.private=true; setSnapshotForNewDroplet(i)" >
                         {{i.name}}
+                        <span class="caret"></span>
                     </button>
+
+                    <!-- dropdown  menu -->
+                    <ul class="uib-dropdown-menu">
+                        <li role="menuitem"><a href="" ng-click="dropletAction(i,CONSTANTS.SNAPSHOT_ACTION_DESTROY)">Delete Snapshot!</a></li>
+                    </ul>
+
                 </div>
             </div>
             <br/>
