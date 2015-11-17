@@ -147,7 +147,6 @@
 
     <div class="well">
         <h4>Create new Droplet</h4>
-        <span>{{data.newDroplet.id}}</span>
         <div class="form-group">
             <label>Name: </label>
             <input type="text" ng-model="data.newDroplet.dropletName" required >
@@ -157,6 +156,7 @@
             <button class="btn btn-block btn-success" ng-disabled="!newDropletDefinitionComplete()"
                 ng-click="createNewDroplet()">Create!</button>
         </div>
+        <span>{{data.newDroplet.id}}</span>
     
     </div>
 
