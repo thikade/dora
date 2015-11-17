@@ -1,11 +1,8 @@
 ﻿/// <reference path="../angular.js" />
 
-//angular.module("sportsStore")
-//angular.module("sportsStore", ["customFilters", "cart" ]);
 
-//declare module
-//angular.module("sportsStore", ["customFilters", "cart", "ngRoute"])
-angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-loading-bar', 'ngAnimate' ])
+// angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-loading-bar', 'ngAnimate', 'customServices'])
+angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-loading-bar', 'ngAnimate'])
 
     .config(function ($routeProvider) {
 
@@ -64,7 +61,7 @@ angular.module("dora")
         "doApiParamSnapshot"  : "type=snapshot"
     })
 
-.controller("DoraMainController", function ($scope, $http, $location, doApiCfg, CONSTANTS ) {
+.controller("DoraMainController", function ($scope, $http, $location, doApiCfg, CONSTANTS, modalDialogService) {
 
 // store token in localstorage: http://html5doctor.com/storing-data-the-simple-html5-way-and-a-few-tricks-you-might-not-have-known/
 
@@ -524,21 +521,34 @@ angular.module("dora")
         $scope.consoleLog("dropletAction: url: " + url);
 
         if (mode === CONSTANTS.DROPLET_ACTION_DESTROY || mode === CONSTANTS.SNAPSHOT_ACTION_DESTROY) {
-            $http.delete(url, httpConfig)
-                .success(function (data) {
-                    $scope.consoleLog("dropletAction: destroy cmd issued. check back later for status updates.");
-                    $scope.data.consoleText = "destroy initiated successfully!\n" + $scope.data.consoleText;
-                })
-                .error(function (error) {
-                    $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
-                    $scope.consoleLog("ERROR: cmd was: DELETE " + url);
-                    $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
-                    $scope.data.consoleText = "destroy cmd error.\n" + $scope.data.consoleText;
-                    $scope.data.consoleText = "cmd was: DELETE " + url + "\n" + $scope.data.consoleText;
-                })
-                .finally(function () {
-                    //$location.path("/complete");
-                });
+            //modalDialogService
+            var modalOptions = {
+                closeButtonText: 'Cancel',
+                actionButtonText: 'Yes!',
+                headerText: 'Confirm Delete',
+                bodyText: 'Are you sure?'
+            };
+
+            modalDialogService.showModal({}, modalOptions).then(function (result) {
+
+                //console.log("DELETE ACTION CALLED");
+
+                $http.delete(url, httpConfig)
+                    .success(function (data) {
+                        $scope.consoleLog("dropletAction: destroy cmd issued. check back later for status updates.");
+                        $scope.data.consoleText = "destroy initiated successfully!\n" + $scope.data.consoleText;
+                    })
+                    .error(function (error) {
+                        $scope.consoleLog("ERROR: dropletAction: cmd issued, but error returned.");
+                        $scope.consoleLog("ERROR: cmd was: DELETE " + url);
+                        $scope.consoleLog("ERROR: id: " + error.id + "  : '" + error.message + "'");
+                        $scope.data.consoleText = "destroy cmd error.\n" + $scope.data.consoleText;
+                        $scope.data.consoleText = "cmd was: DELETE " + url + "\n" + $scope.data.consoleText;
+                    })
+                    .finally(function () {
+                        //$location.path("/complete");
+                    });
+            });
         }
         else {
             $http.post(url, null, httpConfig)
@@ -574,7 +584,6 @@ angular.module("dora")
         $scope.getDORegions();
         $scope.getDOKeys();
     };
-
 
     // ===========================
     // main init
