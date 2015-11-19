@@ -30,6 +30,7 @@ app.use(express.static('public'));
 
 // start the server
 app.listen(port);
+console.log('Node version: ' + process.version);
 console.log( "listening on port " + port);
 console.log( "serving from dir: " + __dirname);
 
