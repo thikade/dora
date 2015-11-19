@@ -43,7 +43,6 @@ angular.module("dora")
 
 .constant("doApiCfg",
     {
-        "myTestToken"      : "0c921cd3369f5513557486ad1009f25ad1e4bbb58abaa43d12169abbf313cbdc",
         "doApiBaseUrl"     : "https://api.digitalocean.com",
         "doApiCmdImages"   : "v2/images",
         "doApiCmdDroplets" : "v2/droplets",
