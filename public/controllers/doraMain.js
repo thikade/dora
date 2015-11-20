@@ -103,7 +103,7 @@ angular.module("dora")
 
     $scope.updateHTTPConfigAuthorization = function (token) {
         httpConfig.headers.Authorization = 'Bearer ' +  token;
-        //$scope.consoleLog(angular.toJson(httpConfig.headers,true));
+        $scope.consoleLog(angular.toJson(httpConfig.headers,true));
 
     };
 
