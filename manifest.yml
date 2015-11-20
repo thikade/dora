@@ -5,5 +5,5 @@ applications:
 #   domain: mybluemix.net
   domain: eu-gb.mybluemix.net
   name: dora
-  host: dora-th
+  host: doradm
   disk_quota: 1024M
