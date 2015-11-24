@@ -60,7 +60,7 @@ angular.module("dora")
         "doApiParamSnapshot"  : "type=snapshot"
     })
 
-.controller("DoraMainController", function ($scope, $http, $location, doApiCfg, CONSTANTS, modalDialogService) {
+.controller("DoraMainController", function ($scope, $http, $location, $timeout, doApiCfg, CONSTANTS, modalDialogService) {
 
 // store token in localstorage: http://html5doctor.com/storing-data-the-simple-html5-way-and-a-few-tricks-you-might-not-have-known/
 
@@ -160,6 +160,16 @@ angular.module("dora")
                 $scope.storeToken($scope.data.bearerToken);
                 $scope.data.validation.result = "Token verified and stored locally.";
                 $scope.consoleLog("token stored locally");
+                // refresh after delay 
+                $timeout(
+                    function(){
+                        $scope.consoleLog("timeout fired!");
+                        $scope.refreshAllDOInfos();
+                        $scope.navigation.selectedMenuButton = "create";
+                        $location.path("/create/droplet");
+                    }, 1500);
+
+
             })
             .error(function (error) {
                 $scope.data.apiError = error;
@@ -592,7 +602,6 @@ angular.module("dora")
 
     if ($scope.data.bearerToken) {
         $scope.navigation.selectedMenuButton = "create";
-        // $location.path("/setup");
         $location.path("/create/droplet");
         $scope.refreshAllDOInfos();
     }
