@@ -313,14 +313,21 @@ angular.module("dora")
     };
 
     $scope.setSnapshotForNewDroplet = function(o) {
-        $scope.consoleLog("new droplet: snapshot is: " + o.name + "  ( " + o.id + " )");
-        $scope.data.newDroplet.snapshot = { name: o.name, id: o.id };
-        $scope.data.newDroplet.snapshot.distribution = o.distribution;
-        if (o.private) {
-            $scope.data.newDroplet.dropletName = $scope.dropletNameFromSnapshotName(o.name);
-        }
-        else {
-            $scope.data.newDroplet.dropletName = o.distribution + "-" + $scope.dropletNameFromSnapshotName(o.name);
+        $scope.consoleLog("new droplet: snapshot is: " + o.name + "  ( " + o.id + " ) available in regions: " + o.regions);
+        $scope.consoleLog("old snapshot object: " + angular.toJson($scope.data.newDroplet.snapshot));
+        if ($scope.data.newDroplet.snapshot) {
+            // clear selection
+            $scope.data.newDroplet.snapshot = undefined;
+
+        } else {
+            $scope.data.newDroplet.snapshot = { name: o.name, id: o.id , regionID: o.regions[0] };
+            $scope.data.newDroplet.snapshot.distribution = o.distribution;
+            if (o.private) {
+                $scope.data.newDroplet.dropletName = $scope.dropletNameFromSnapshotName(o.name);
+            }
+            else {
+                $scope.data.newDroplet.dropletName = o.distribution + "-" + $scope.dropletNameFromSnapshotName(o.name);
+            }
         }
     };
 
