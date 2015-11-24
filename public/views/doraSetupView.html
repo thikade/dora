@@ -1,4 +1,3 @@
-
 <div class="well">
     <div class="">
         <h3>Enter your DO API v2 Bearer token</h3>
@@ -13,9 +12,10 @@
     <form name="tokenForm" novalidate>
         <div class="form-group">
             <label>Bearer token</label>
-            <input name="token" class="form-control" ng-model="data.bearerToken" value="{{data.bearerToken}}" required />
+            <input name="token" class="form-control" ng-model="data.bearerToken" value="{{data.bearerToken}}" 
+			ng-pattern="/^[0-9A-Fa-f]{64}$/" required />
             <span class="error" ng-show="tokenForm.token.$error.required">
-                Please enter your DO API v2 Bearer token!
+                Please enter your DO API v2 Bearer token! (64 char hex).
             </span>
         </div>
     </form>
