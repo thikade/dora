@@ -11,15 +11,15 @@ angular.module("dora", [ "customFilters", "ui.bootstrap", "ngRoute", 'angular-lo
         // });
 
         $routeProvider.when("/setup", {
-            templateUrl: "/views/doraSetupView.html"
+            templateUrl: "views/doraSetupView.html"
         });
 
         $routeProvider.when("/create/droplet", {
-            templateUrl: "/views/doraCreateDropletView.html"
+            templateUrl: "views/doraCreateDropletView.html"
         });
 
         $routeProvider.otherwise({
-            templateUrl: "/views/doraCreateDropletView.html"
+            templateUrl: "views/doraCreateDropletView.html"
         });
 
     });
