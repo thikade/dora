@@ -1,17 +1,5 @@
-//old
-/*
-var connect = require('connect');
-var serveStatic = require('serve-static');
 
-var app = connect();
-var serverDir="D:/Apps/nodejs-data/dora/public";
-
-app.use(serveStatic(serverDir) );
-app.listen(5000);
-
-*/
-
-// new 
+// useful for CF/Bluemix, wont hurt if run just from local nodejs
 var cfenv = require('cfenv');
 var appEnv = cfenv.getAppEnv();
 var port = appEnv.port;
