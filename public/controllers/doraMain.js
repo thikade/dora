@@ -315,15 +315,16 @@ angular.module("dora")
     $scope.setSnapshotForNewDroplet = function(o) {
         $scope.consoleLog("new droplet: snapshot is: " + o.name + "  ( " + o.id + " ) available in regions: " + o.regions);
         $scope.consoleLog("old snapshot object: " + angular.toJson($scope.data.newDroplet.snapshot));
+        // toggle snapshot data if it was selected previously!
         if ($scope.data.newDroplet.snapshot) {
-            // clear selection
+            // this clears selection
             $scope.data.newDroplet.snapshot = undefined;
 
         } else {
-            $scope.data.newDroplet.snapshot = { name: o.name, id: o.id , regionID: o.regions[0] };
-            $scope.data.newDroplet.snapshot.distribution = o.distribution;
+            $scope.data.newDroplet.snapshot = { name: o.name, id: o.id , distribution: o.distribution, regionID: undefined };
             if (o.private) {
                 $scope.data.newDroplet.dropletName = $scope.dropletNameFromSnapshotName(o.name);
+                $scope.data.newDroplet.snapshot.regionID = o.regions[0];
             }
             else {
                 $scope.data.newDroplet.dropletName = o.distribution + "-" + $scope.dropletNameFromSnapshotName(o.name);

@@ -106,7 +106,6 @@
                 <button class='btn btn-default' ng-repeat="i in data.apiResponse.regions.regions | orderBy: 'name'" 
                     ng-hide="data.newDroplet.snapshot.regionID && i.slug !== data.newDroplet.snapshot.regionID"
                     ng-class="{ 'btn-primary' : i.name === data.newDroplet.region.name }"
-                    ng-show="data.apiResponse.regions"
                     ng-click="setRegionForNewDroplet(i)" >
                     {{i.name}}
                 </button>
